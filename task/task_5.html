@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="style.css">
+	<title>Task 5</title>
+</head>
+
+<body>
+	<script>
+	/*Особиста бібліотека. Картотека домашньої бібліотеки: дані книги 
+	(автори (піб, рік народження, короткий опис), назва книги, жанр, 
+	видавництво (назва, реєстраційний номер, рік засування)). 
+	Реалізувати розділи бібліотеки (спеціальна література, хобі, домашнє господарство і т.д.), 
+	походження книги і наявність на даний час. Організувати додавання/вилучення книг 
+	та вибір книг за назвою, за ПІБ автора, за видавництвом.*/
+	//клас для автора
+	class Author{
+	constructor(initData){
+		Object.assign(this,initData)
+	}
+	toString(){
+		return `${this.authorName}.${this.authorBDay}`
+	}
+}
+//клас для видавництва
+	class PublishingHouse{
+	constructor(initData){
+		Object.assign(this,initData)
+	}
+	toString(){
+		return `${this.publishingName}. Дата створення: ${this.publishingFoundation} рік.`
+	}
+}
+//клас для книги
+class Book{
+	constructor(author,publishing,initTitle,initGenre){
+		this.author = author
+		this.title = initTitle
+		this.genre = initGenre
+		this.publishing = publishing
+	}
+	toString(){
+		return `${this.author.authorName} - '${this.title}', ${this.publishing.publishingName}`
+	}
+}
+//клас для розділів біблеотеки
+class SectionsOfLibrary{
+	constructor(initData){
+		Object.assign(this,initData)
+		this.booksList = []
+	}
+	//додавання книг 
+	addBooks(newBook){
+		this.booksList.push({
+			id: new Date().getTime(),
+			data: newBook
+		})
+	}
+	//вилучення книг 
+	removeBookById(bookIdToRemove){
+		this.booksList = this.booksList.filter(
+			(book) => book.id !== bookIdToRemove
+		)
+	}
+	isBookAvailable(book){
+		return this.booksList.includes(book)
+	}
+	toString(){
+		return `${this.titleSection}:<br> ${this.booksList.map((book) => book.toString() + '<br>')}`
+	}
+}
+//клас для бібліотеки
+class Library{
+	constructor(books,sections){
+		this.books = books,
+		this.sections = sections
+	}
+	addBooksToSection(){
+		let sectionsName = Object.keys(sections)
+		for(const book of this.books){
+			const selectedSectionNumber = prompt(
+				`Виберіть номер секції, в яку покласти ${book}\n1.Спеціальна література.\n2.Хоббі.\n3.Розвиток`
+			).split(',').map((book) => parseInt(book) - 1)
+			for(const bookSectionIndex of selectedSectionNumber){
+				const bookSectionKey = sectionsName[bookSectionIndex]
+				this.sections[bookSectionKey].booksList.push(book)
+			}
+		}
+	}
+	printData(){
+		for(const bookSectionKey in this.sections){
+			document.write(sections[bookSectionKey])
+		}
+	}
+	//вибір книг за назвою
+	chooseBookByName(name){
+		let arr = []
+		for(const book of this.books){
+			if(book['title'] === name) arr.push(book)
+		}
+		return arr
+	}
+	//вибір книг за ПІБ автора, за видавництвом
+	chooseBookByAuthor(author){
+		let arr = []
+		for(const book of this.books){
+			if(book.author['authorName'] === author) arr.push(book)
+		}
+		return arr
+	}
+	//вибір книг за видавництвом
+	chooseBookByPublish(publish){
+		let arr = []
+		for(const book of this.books){
+			if(book.publishing['publishingName'] === publish) arr.push(book)
+		}
+		return arr
+	}
+}
+//
+let authors = [
+	new Author({authorName: 'Сергій Плохій', authorBDay: '23 травня 1957',authorInfo: 'Український та американський історик'}),
+	new Author({authorName: 'Массімо Пільюччі', authorBDay: '16 січня 1964',authorInfo: 'Американський філософ, професор філософії'}),
+	new Author({authorName: 'Раян Голідей', authorBDay: '16 червня 1987',authorInfo: 'Американський маркетолог, підприємець'})
+]
+let publishings = [
+	new PublishingHouse({publishingName: 'Клуб Сімейного Дозвілля', publishingNumber: 23954, publishingFoundation: 2000}),
+	new PublishingHouse({publishingName: 'Лабораторія', publishingNumber: 37610, publishingFoundation: 2020}),
+	new PublishingHouse({publishingName: 'Наш Формат', publishingNumber: 90781, publishingFoundation: 2006})
+]
+let books = [
+	new Book(authors[0],publishings[0],'Ядерне безумство', 'Історія'),
+	new Book(authors[1],publishings[1],'Нові стоїки', 'Психологія'),
+	new Book(authors[2],publishings[2],'Зберігайте спокій', 'Саморозвиток')
+]
+let sections = {
+	special: new SectionsOfLibrary({titleSection: 'Спеціальна література',place: 20}),
+	hobby: new SectionsOfLibrary({titleSection: 'Хоббі',place: 10}),
+	development: new SectionsOfLibrary({titleSection: 'Розвиток',place: 30})
+}
+let library = new Library(books,sections)
+library.addBooksToSection()
+library.printData()
+//вибір книг за назвою
+console.log(library.chooseBookByName('Ядерне безумство'))
+//вибір книг за ПІБ автора
+console.log(library.chooseBookByAuthor('Массімо Пільюччі'))
+//вибір книг за видавництвом
+console.log(library.chooseBookByPublish('Наш Формат'))
+</script>
+</body>
+</html>

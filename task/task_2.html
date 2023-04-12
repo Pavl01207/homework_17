@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="style.css">
+	<title>Task 2</title>
+</head>
+
+<body>
+	<script>
+		/*Створити службове авто (водій, марка, номер). Створити клас таким чином, щоб можна було створити тільки один екземпляр цього класу.*/
+		class OfficialCar{
+			static officialCarObj
+			constructor(initDriver, initModel, initNumber){
+				if(OfficialCar.officialCarObj) return OfficialCar.officialCarObj
+				this.driver = initDriver,
+				this.model = initModel,
+				this.number = initNumber
+				OfficialCar.officialCarObj = this
+			}
+			toString(){
+				return `<p>Driver: <span>${this.driver}</span>, Car Model: <span>${this.model}</span>.</p>`
+			}
+			valueOf(){
+				return this.number
+			}
+		}
+		let driverOne = new OfficialCar('Pavlo','Skoda',4731)
+		document.write(driverOne)
+		let driverTwo = new OfficialCar('Katya','Audi',3918)
+		console.log(driverTwo)
+	</script>
+</body>
+</html>

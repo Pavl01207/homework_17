@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="style.css">
+	<title>Task 1</title>
+</head>
+
+<body>
+	<script>
+	/*Створити клас, що дозволяє виконувати такі операції над масивами: 
+	знаходження кількості додатних, кількості від’ємних, кількість входжень деякого числа (статичні методи)*/
+	class Numbers{
+		static valueArray
+		constructor(value){
+			Numbers.valueArray = value
+		}
+		//знаходження кількості додатних
+		static numbersOfPositive(){
+			return this.valueArray.reduce((prevCount,element) => element < 0 ? prevCount + 1 : prevCount, 0)
+		}
+		//знаходження кількості від’ємних
+		static numbersOfNegative(){
+			return this.valueArray.reduce((prevCount,element) => element > 0 ? prevCount + 1 : prevCount, 0)
+		}
+		//кількість входжень деякого числа
+		static numberEntered(number){
+			let couner = 0
+			for(let i = 0; i < this.valueArray.length; i++){
+				if(this.valueArray[i] === number) couner++
+			}
+			return couner
+		}
+		static showArray(){
+			return `<p>Даний масив: <span>${Numbers.valueArray}</span>.</p>`
+		}
+	}
+	//створення масива
+	function getRandomNumbers(minValue,maxValue){
+		return minValue + Math.floor(Math.random() * (maxValue - minValue + 1))
+	}
+	function makeArray(numbers,minValue,maxValue){
+		let arr = []
+		for(let i = 0; i < numbers; i++){
+			const element = getRandomNumbers(minValue,maxValue)
+			arr.push(element)
+		}
+		return arr
+	}
+	let valueArray = makeArray(10, -10, 10)
+	//
+	let numbersArray = new Numbers(valueArray)
+	document.write(Numbers.showArray())
+	document.write(`<p>Кількість додатніх чисел: <span>${Numbers.numbersOfPositive()}</span>.</p>`)
+	document.write(`<p>Кількість від'ємних чисел: <span>${Numbers.numbersOfNegative()}</span>.</p>`)
+	document.write(`<p>Кількість входжень числа <span>4</span> - <span>${Numbers.numberEntered(4)}</span>.</p>`)
+	</script>
+</body>
+</html>

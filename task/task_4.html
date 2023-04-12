@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="style.css">
+	<title>Task 4</title>
+</head>
+
+<body>
+	<script>
+	/*Склад. База товарів, які зберігаються на складі: 
+	назва товару, одиниця виміру, кількість, фірма виробник (назва, реєстраційний номер). 
+	Організувати реєстрацію/відвантаження товарів, фільтрація за назвою товару, фільтрація за назвою фірми*/
+	//створення окремого класу для фірм виробника (назва, реєстраційний номер)
+	class Manufacturer{
+	constructor({manufacturerName,manufacturerNumber}){
+		this.manufacturerName = manufacturerName
+		this.manufacturerNumber = manufacturerNumber
+	}
+	toString(){
+		return `Назва фірми виробника: ${this.manufacturerName}, Реєстраційний номер: ${this.manufacturerNumber}`
+	}
+	valueOf(){
+		return this.manufacturerNumber
+	}
+} 
+//клас для товару
+	class Goods{
+	constructor(initData){
+		this.goodsName = initData.goodsName
+		this.goodsUnit = initData.goodsUnit
+		this.goodsNumber = initData.goodsNumber
+		this.manufacturer = new Manufacturer(initData)
+	}
+	toString(){
+		return `<p>Назва товару: <span>${this.goodsName}</span>, кількість: <span>${this.goodsNumber}</span>.</p>`
+	}
+	valueOf(){
+		return this.goodsNumber
+	}
+}
+//масив товарів
+let storage = [
+new Goods({manufacturerName: 'Nivea', manufacturerNumber: 29210, goodsName: 'ShaveCream', goodsUnit: 'туба', goodsNumber: 200}),
+new Goods({manufacturerName: 'OldSpice', manufacturerNumber: 58340, goodsName: 'ShowerGel', goodsUnit: 'флакон', goodsNumber: 400}),
+new Goods({manufacturerName: 'Axe', manufacturerNumber: 61289, goodsName: 'Deodorant', goodsUnit: 'балончик', goodsNumber: 300}),
+new Goods({manufacturerName: 'Axe', manufacturerNumber: 61289, goodsName: 'ShowerGel', goodsUnit: 'флакон', goodsNumber: 200}),
+new Goods({manufacturerName: 'OldSpice', manufacturerNumber: 58340, goodsName: 'Deodorant', goodsUnit: 'балончик', goodsNumber: 400})
+]
+console.log(storage)
+//відвантаження товарів
+function shipmentGoods(arr,manufacturerName,name,number){
+	for(let i = 0; i < arr.length; i++){
+		if(arr[i].goodsName === name && arr[i].manufacturer.manufacturerName === manufacturerName) arr[i].goodsNumber-=number
+	}
+}
+shipmentGoods(storage,'OldSpice','ShowerGel',200)
+console.log(storage)
+//фільтрація за назвою товару
+function getByGoodsName(arr,name){
+	let newArr = []
+	for(let i = 0; i < arr.length; i++){
+		if(arr[i].goodsName === name) newArr.push(arr[i])
+	}
+	return newArr
+}
+let arrByDeodorant = getByGoodsName(storage,'Deodorant')
+console.log(arrByDeodorant)
+//фільтрація за назвою фірми
+function getByManufacturerName(arr,name){
+	let newArr = []
+	for(let i = 0; i < arr.length; i++){
+		if(arr[i].manufacturer.manufacturerName === name) newArr.push(arr[i])
+	}
+	return newArr
+}
+let arrByAxe = getByManufacturerName(storage,'Axe')
+console.log(arrByAxe)
+//
+for(const good of storage){
+	document.write(`${good} ${good.manufacturer}`)
+}
+</script>
+</body>
+</html>
